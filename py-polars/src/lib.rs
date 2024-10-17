@@ -15,6 +15,8 @@ use polars_python::cloud;
 use polars_python::dataframe::PyDataFrame;
 use polars_python::expr::PyExpr;
 use polars_python::functions::PyStringCacheHolder;
+use polars_python::lazyframe::visitor::expr_nodes::_expr_nodes;
+use polars_python::lazyframe::visitor::nodes::_ir_nodes;
 use polars_python::lazyframe::{PyInProcessQuery, PyLazyFrame};
 use polars_python::lazygroupby::PyLazyGroupBy;
 use polars_python::series::PySeries;
@@ -23,63 +25,6 @@ use polars_python::sql::PySQLContext;
 use polars_python::{exceptions, functions};
 use pyo3::prelude::*;
 use pyo3::{wrap_pyfunction, wrap_pymodule};
-
-#[pymodule]
-fn _ir_nodes(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
-    use polars_python::lazyframe::visitor::nodes::*;
-    m.add_class::<PythonScan>().unwrap();
-    m.add_class::<Slice>().unwrap();
-    m.add_class::<Filter>().unwrap();
-    m.add_class::<Scan>().unwrap();
-    m.add_class::<DataFrameScan>().unwrap();
-    m.add_class::<SimpleProjection>().unwrap();
-    m.add_class::<Select>().unwrap();
-    m.add_class::<Sort>().unwrap();
-    m.add_class::<Cache>().unwrap();
-    m.add_class::<GroupBy>().unwrap();
-    m.add_class::<Join>().unwrap();
-    m.add_class::<HStack>().unwrap();
-    m.add_class::<Reduce>().unwrap();
-    m.add_class::<Distinct>().unwrap();
-    m.add_class::<MapFunction>().unwrap();
-    m.add_class::<Union>().unwrap();
-    m.add_class::<HConcat>().unwrap();
-    m.add_class::<ExtContext>().unwrap();
-    m.add_class::<Sink>().unwrap();
-    Ok(())
-}
-
-#[pymodule]
-fn _expr_nodes(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
-    use polars_python::lazyframe::visit::PyExprIR;
-    use polars_python::lazyframe::visitor::expr_nodes::*;
-    // Expressions
-    m.add_class::<PyExprIR>().unwrap();
-    m.add_class::<Alias>().unwrap();
-    m.add_class::<Column>().unwrap();
-    m.add_class::<Literal>().unwrap();
-    m.add_class::<BinaryExpr>().unwrap();
-    m.add_class::<Cast>().unwrap();
-    m.add_class::<Sort>().unwrap();
-    m.add_class::<Gather>().unwrap();
-    m.add_class::<Filter>().unwrap();
-    m.add_class::<SortBy>().unwrap();
-    m.add_class::<Agg>().unwrap();
-    m.add_class::<Ternary>().unwrap();
-    m.add_class::<Function>().unwrap();
-    m.add_class::<Slice>().unwrap();
-    m.add_class::<Len>().unwrap();
-    m.add_class::<Window>().unwrap();
-    m.add_class::<PyOperator>().unwrap();
-    m.add_class::<PyStringFunction>().unwrap();
-    m.add_class::<PyBooleanFunction>().unwrap();
-    m.add_class::<PyTemporalFunction>().unwrap();
-    // Options
-    m.add_class::<PyWindowMapping>().unwrap();
-    m.add_class::<PyRollingGroupOptions>().unwrap();
-    m.add_class::<PyGroupbyOptions>().unwrap();
-    Ok(())
-}
 
 #[pymodule]
 fn polars(py: Python, m: &Bound<PyModule>) -> PyResult<()> {

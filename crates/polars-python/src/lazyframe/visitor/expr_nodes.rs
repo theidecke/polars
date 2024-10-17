@@ -494,6 +494,38 @@ impl PyGroupbyOptions {
     }
 }
 
+#[pymodule]
+pub fn _expr_nodes(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
+    use crate::lazyframe::visit::PyExprIR;
+
+    // Expressions
+    m.add_class::<PyExprIR>().unwrap();
+    m.add_class::<Alias>().unwrap();
+    m.add_class::<Column>().unwrap();
+    m.add_class::<Literal>().unwrap();
+    m.add_class::<BinaryExpr>().unwrap();
+    m.add_class::<Cast>().unwrap();
+    m.add_class::<Sort>().unwrap();
+    m.add_class::<Gather>().unwrap();
+    m.add_class::<Filter>().unwrap();
+    m.add_class::<SortBy>().unwrap();
+    m.add_class::<Agg>().unwrap();
+    m.add_class::<Ternary>().unwrap();
+    m.add_class::<Function>().unwrap();
+    m.add_class::<Slice>().unwrap();
+    m.add_class::<Len>().unwrap();
+    m.add_class::<Window>().unwrap();
+    m.add_class::<PyOperator>().unwrap();
+    m.add_class::<PyStringFunction>().unwrap();
+    m.add_class::<PyBooleanFunction>().unwrap();
+    m.add_class::<PyTemporalFunction>().unwrap();
+    // Options
+    m.add_class::<PyWindowMapping>().unwrap();
+    m.add_class::<PyRollingGroupOptions>().unwrap();
+    m.add_class::<PyGroupbyOptions>().unwrap();
+    Ok(())
+}
+
 pub(crate) fn into_py(py: Python<'_>, expr: &AExpr) -> PyResult<PyObject> {
     let result = match expr {
         AExpr::Explode(_) => return Err(PyNotImplementedError::new_err("explode")),

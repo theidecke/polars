@@ -259,6 +259,30 @@ pub struct Sink {
     payload: PyObject,
 }
 
+#[pymodule]
+pub fn _ir_nodes(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
+    m.add_class::<PythonScan>().unwrap();
+    m.add_class::<Slice>().unwrap();
+    m.add_class::<Filter>().unwrap();
+    m.add_class::<Scan>().unwrap();
+    m.add_class::<DataFrameScan>().unwrap();
+    m.add_class::<SimpleProjection>().unwrap();
+    m.add_class::<Select>().unwrap();
+    m.add_class::<Sort>().unwrap();
+    m.add_class::<Cache>().unwrap();
+    m.add_class::<GroupBy>().unwrap();
+    m.add_class::<Join>().unwrap();
+    m.add_class::<HStack>().unwrap();
+    m.add_class::<Reduce>().unwrap();
+    m.add_class::<Distinct>().unwrap();
+    m.add_class::<MapFunction>().unwrap();
+    m.add_class::<Union>().unwrap();
+    m.add_class::<HConcat>().unwrap();
+    m.add_class::<ExtContext>().unwrap();
+    m.add_class::<Sink>().unwrap();
+    Ok(())
+}
+
 pub(crate) fn into_py(py: Python<'_>, plan: &IR) -> PyResult<PyObject> {
     let result = match plan {
         IR::PythonScan { options } => {
